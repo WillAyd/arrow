@@ -2400,6 +2400,16 @@ TEST(Cast, ExtensionTypeToIntDowncast) {
   }
 }
 
+TEST(Cast, IntToExtensionType) {
+  auto smallint = std::make_shared<SmallintType>();
+  ExtensionTypeGuard smallint_guard(smallint);
+
+  std::shared_ptr<Array> result;
+  std::vector<bool> is_valid = {true, false, true, true, true};
+
+  CheckCastZeroCopy(ArrayFromJSON(int16(), "[0, 100, 200, 1, 2]"), smallint);
+}  
+
 TEST(Cast, DictTypeToAnotherDict) {
   auto check_cast = [&](const std::shared_ptr<DataType>& in_type,
                         const std::shared_ptr<DataType>& out_type,
