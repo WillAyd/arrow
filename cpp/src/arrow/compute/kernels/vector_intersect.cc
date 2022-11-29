@@ -69,9 +69,11 @@ class Intersector : public TypeVisitor {
 
     std::vector<PhysicalType> keep{};
     const stl::ChunkedArrayIterator<ArrayType> iterator(*sorted.chunked_array());
-    for (auto i = 0; i < chunked_arr.length() - 1; i++) {
-      if (iterator[i] == iterator[i + 1]) {
-        keep.push_back(*iterator[i]);
+    if (chunked_arr.length() > 0) {
+      for (auto i = 0; i < chunked_arr.length() - 1; i++) {
+        if (*iterator[i] == *iterator[i + 1]) {
+          keep.push_back(*iterator[i]);
+        }
       }
     }
 

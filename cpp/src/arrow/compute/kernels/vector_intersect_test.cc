@@ -54,7 +54,7 @@ TEST(TestIntersect, IntersectBool) {
     AssertIntersect(array1, array2, expected);
   }
 }
-
+*/
 TEST(TestIntersect, IntersectTemporal) {
   for (auto temporal_type : ::arrow::TemporalTypes()) {
     AssertIntersectEmpty(temporal_type);
@@ -65,7 +65,7 @@ TEST(TestIntersect, IntersectTemporal) {
     AssertIntersect(array1, array2, expected);
   }
 }
-*/
+
 
 TEST(TestIntersect, IntersectStrings) {
   for (auto string_type : ::arrow::StringTypes()) {
