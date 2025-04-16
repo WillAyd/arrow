@@ -139,7 +139,8 @@ if [ "${ARROW_USE_MESON:-OFF}" = "ON" ]; then
       fi
     fi
   fi
-  meson setup \
+
+  CUDA_PATH="${CONDA_PREFIX}" meson setup \
     --prefix=${MESON_PREFIX:-${ARROW_HOME}} \
     --buildtype=${ARROW_BUILD_TYPE:-debug} \
     -Dauto_features=enabled \
