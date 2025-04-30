@@ -27,9 +27,12 @@ project(
         check: true,
     ).stdout().strip(),
     license: 'Apache-2.0',
+    license_files: ['../LICENSE.txt'],
     meson_version: '>=1.4.0',
     default_options: ['buildtype=release', 'cpp_std=c++17'],
 )
+
+install_data('../NOTICE.txt', install_dir: py.get_install_dir() / 'pyarrow')
 
 arrow_dep = dependency(
     'arrow',
