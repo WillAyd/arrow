@@ -594,6 +594,7 @@ arrow_tests = {
             'array/array_dict_test.cc',
             'array/array_list_test.cc',
             'array/array_list_view_test.cc',
+            'array/array_primitive_test.cc',
             'array/array_run_end_test.cc',
             'array/array_struct_test.cc',
             'array/array_union_test.cc',
