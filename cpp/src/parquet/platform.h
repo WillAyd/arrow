@@ -55,7 +55,7 @@
 
 #else  // Not Windows
 #  ifndef PARQUET_EXPORT
-#    define PARQUET_EXPORT __attribute__((visibility("default")))
+#    define PARQUET_EXPORT [[gnu::visibility("default")]]
 #  endif
 #  ifndef PARQUET_NO_EXPORT
 #    define PARQUET_NO_EXPORT __attribute__((visibility("hidden")))

@@ -116,8 +116,7 @@ parquet_lib = library(
     'arrow-parquet',
     sources: parquet_srcs,
     dependencies: parquet_deps,
-    # TODO: enable hidden visibility by default
-    #gnu_symbol_visibility: 'hidden',
+    gnu_symbol_visibility: 'hidden',
 )
 
 parquet_dep = declare_dependency(link_with: parquet_lib)
@@ -269,13 +268,16 @@ if needs_parquet_encryption
     }
 endif
 
-parquet_test_dep = [parquet_dep, arrow_test_dep, thrift_dep]
+parquet_test_dep = declare_dependency(
+    sources: files('../generated/parquet_types.cpp', 'test_util.cc'),
+    dependencies: [parquet_dep, arrow_test_dep, thrift_dep],
+)
 
 foreach key, val : parquet_tests
     test_name = 'parquet-@0@'.format(key)
     exc = executable(
         test_name,
-        sources: val['sources'] + files('test_util.cc'),
+        sources: val['sources'],
         dependencies: parquet_test_dep,
     )
     test(test_name, exc)
@@ -301,7 +303,10 @@ parquet_benchmarks = {
     'size_stats_benchmark': {'sources': files('arrow/size_stats_benchmark.cc')},
 }
 
-parquet_benchmark_dep = [parquet_dep, arrow_benchmark_dep, thrift_dep]
+parquet_benchmark_dep = declare_dependency(
+    sources: files('../generated/parquet_types.cpp'),
+    dependencies: [parquet_dep, arrow_benchmark_dep, thrift_dep],
+)
 
 foreach key, val : parquet_benchmarks
     benchmark_name = 'parquet-@0@'.format(key)
