@@ -96,7 +96,7 @@ if [ "${ARROW_USE_MESON:-OFF}" = "ON" ]; then
     --print-errorlogs \
     --suite arrow \
     --max-lines=0 \
-    --timeout-multiplier 10 \
+    --timeout-multiplier=10 \
     "$@"
 else
   ctest \

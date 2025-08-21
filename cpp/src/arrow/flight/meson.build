@@ -44,8 +44,6 @@ install_headers(
     subdir: 'arrow/flight',
 )
 
-# We specifically need to use the grpc subproject and cannot use a system installion
-# due to https://github.com/mesonbuild/meson/issues/14905
 grpc_opts = []
 if cpp_compiler.get_id() == 'msvc'
     grpc_opts += [
@@ -53,8 +51,13 @@ if cpp_compiler.get_id() == 'msvc'
         're2:default_library=static',  # re2 deos not export symbols
     ]
 endif
-grpc_proj = subproject('grpc', default_options: grpc_opts)
-grpc_dep = grpc_proj.get_variable('grpcpp_dep')
+
+grpc_cpp_dep = dependency(
+    'gRPC++',
+    fallback: ['grpc', 'grpcpp_dep'],
+    default_options: grpc_opts,
+)
+
 protobuf_dep = dependency('protobuf')
 abseil_sync_dep = dependency('absl_synchronization')
 
@@ -129,7 +132,7 @@ arrow_flight = build_target(
     ],
     dependencies: [
         arrow_dep,
-        grpc_dep,
+        grpc_cpp_dep,
         protobuf_dep,
         abseil_sync_dep,
         thread_dep,
@@ -146,7 +149,7 @@ endif
 
 arrow_flight_dep = declare_dependency(
     link_with: arrow_flight,
-    dependencies: [grpc_dep, protobuf_dep, abseil_sync_dep],
+    dependencies: [grpc_cpp_dep, protobuf_dep, abseil_sync_dep],
     compile_args: arrow_flight_compile_args,
 )
 
