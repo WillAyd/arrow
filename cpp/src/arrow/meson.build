@@ -418,7 +418,69 @@ if needs_filesystem
     endif
 
     if needs_s3
-        error('s3 filesystem support is not yet implemented in Meson')
+        arrow_filesystem_srcs += files('filesystem/s3fs.cc')
+
+        aws_cpp_sdk_identity_management_dep = dependency(
+            'aws-cpp-sdk-identity-management',
+            allow_fallback: false,
+            required: false,
+        )
+
+        aws_cpp_sdk_sts_dep = dependency(
+            'aws-cpp-sdk-sts',
+            allow_fallback: false,
+            required: false,
+        )
+
+        aws_cpp_sdk_cognito_identity_dep = dependency(
+            'aws-cpp-sdk-cognito-identity',
+            allow_fallback: false,
+            required: false,
+        )
+
+        aws_cpp_sdk_s3_dep = dependency(
+            'aws-cpp-sdk-s3',
+            allow_fallback: false,
+            required: false,
+        )
+
+        aws_cpp_sdk_core_dep = dependency(
+            'aws-cpp-sdk-core',
+            allow_fallback: false,
+            required: false,
+        )
+
+        if not (
+            aws_cpp_sdk_identity_management_dep.found()
+            and aws_cpp_sdk_sts_dep.found()
+            and aws_cpp_sdk_cognito_identity_dep.found()
+            and aws_cpp_sdk_s3_dep.found()
+            and aws_cpp_sdk_core_dep.found()
+        )
+            error(
+                '''
+The Arrow Meson configuration requires that aws-cpp-sdk-identity-management,
+aws-cpp-sdk-sts, aws-cpp-sdk-cognito-identity, aws-cpp-sdk-s3, and
+aws-cpp-sdk-core be provided by the host system, but these could not be found.
+Subproject fallback is not implemented.
+
+Ensure that you have all of these components installed on your system, or
+disable Arrow s3 support with -Ds3=disabled.
+                ''',
+            )
+        endif
+
+        s3_dep = declare_dependency(
+            dependencies: [
+                aws_cpp_sdk_identity_management_dep,
+                aws_cpp_sdk_sts_dep,
+                aws_cpp_sdk_cognito_identity_dep,
+                aws_cpp_sdk_s3_dep,
+                aws_cpp_sdk_core_dep,
+            ],
+        )
+
+        arrow_filesystem_deps += [s3_dep]
     endif
 
     arrow_components += {

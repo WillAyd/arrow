@@ -56,7 +56,7 @@ conf_data.set('ARROW_AZURE', false)
 conf_data.set('ARROW_ENABLE_THREADING', true)
 conf_data.set('ARROW_GCS', false)
 conf_data.set('ARROW_HDFS', false)
-conf_data.set('ARROW_S3', false)
+conf_data.set('ARROW_S3', needs_s3)
 conf_data.set('ARROW_USE_GLOG', false)
 
 has_int128 = cpp_compiler.has_define('__SIZEOF_INT128__')

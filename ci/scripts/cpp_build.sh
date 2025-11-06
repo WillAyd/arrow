@@ -147,7 +147,6 @@ if [ "${ARROW_USE_MESON:-OFF}" = "ON" ]; then
     -Dauto_features=enabled \
     -Dfuzzing=disabled \
     -Dgcs=disabled \
-    -Ds3=disabled \
     . \
     ${source_dir}
 
